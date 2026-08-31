@@ -5,6 +5,7 @@ import LocalFont from "next/font/local";
 
 import { ThemeProvider } from "$/theme-provider";
 import { DirectionProvider } from "$/ui/direction";
+import { Toaster } from "$/ui/sonner";
 
 import "./globals.css";
 
@@ -53,7 +54,15 @@ export default function RootLayout({
     >
       <body>
         <DirectionProvider direction="rtl">
-          <ThemeProvider>{children}</ThemeProvider>
+          <ThemeProvider>
+            {children}
+            <Toaster
+              duration={3000}
+              position="top-center"
+              richColors
+              swipeDirections={["left", "right", "top"]}
+            />
+          </ThemeProvider>
         </DirectionProvider>
       </body>
     </html>
