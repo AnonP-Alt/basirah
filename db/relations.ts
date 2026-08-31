@@ -1,3 +1,4 @@
+import { khutbah, mosque } from "./schema/app.sql";
 import {
   account,
   session,
@@ -5,6 +6,30 @@ import {
   verification,
 } from "./schema/auth.sql";
 import { defineRelationsPart } from "drizzle-orm";
+
+export const appRelations = defineRelationsPart(
+  { khutbah, mosque, user },
+  (r) => ({
+    khutbah: {
+      sheikh: r.one.user({
+        from: r.khutbah.sheikhId,
+        to: r.user.id,
+        optional: false,
+      }),
+      mosque: r.one.mosque({
+        from: r.khutbah.mosqueId,
+        to: r.mosque.id,
+        optional: false,
+      }),
+    },
+    mosque: {
+      khutab: r.many.khutbah(),
+    },
+    user: {
+      khutab: r.many.khutbah(),
+    },
+  })
+);
 
 export const authRelations = defineRelationsPart(
   { user, session, account, verification },

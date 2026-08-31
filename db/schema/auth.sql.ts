@@ -1,6 +1,8 @@
+import { roleEnum } from "./app.sql";
 import {
   boolean,
   index,
+  pgEnum,
   pgTable,
   text,
   timestamp,
@@ -21,6 +23,9 @@ export const user = pgTable("user", {
     .$onUpdate(() => /* @__PURE__ */ new Date())
     .notNull(),
   username: text("username").unique(),
+  address: text("address").notNull(),
+  nationalId: text("national_id").notNull(),
+  role: roleEnum().default("SHEIKH"),
 });
 
 export const session = pgTable(
