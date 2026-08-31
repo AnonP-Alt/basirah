@@ -20,6 +20,10 @@ export const userAdditionalFields: Record<
     required: true,
     returned: false,
     type: "string",
+    unique: true,
+    validator: {
+      input: z.string().regex(/^\d{14}$/),
+    },
   },
   role: {
     defaultValue: "SHEIKH",
@@ -29,6 +33,15 @@ export const userAdditionalFields: Record<
     type: "string",
     validator: {
       input: z.enum(["MODERATOR", "SHEIKH"]),
+    },
+  },
+  username: {
+    input: true,
+    required: true,
+    returned: true,
+    type: "string",
+    validator: {
+      input: z.string().regex(/^01[0125]\d{8}$/),
     },
   },
 };

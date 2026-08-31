@@ -1,4 +1,4 @@
-import { userAdditionalFields } from "./auth";
+import { type auth } from "./auth";
 import { createAuthClient } from "better-auth/react";
 import {
   inferAdditionalFields,
@@ -7,7 +7,7 @@ import {
 
 export const authClient = createAuthClient({
   plugins: [
-    inferAdditionalFields(userAdditionalFields),
+    inferAdditionalFields<typeof auth>(),
     usernameClient({ displayUsername: false }),
   ],
 });
