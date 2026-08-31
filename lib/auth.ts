@@ -1,4 +1,4 @@
-import { db } from "@/drizzle";
+import { db } from "@/db";
 import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
 import { username } from "better-auth/plugins";
