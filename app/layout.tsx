@@ -1,30 +1,52 @@
-import { Geist, Geist_Mono, Inter } from "next/font/google"
-
-import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
 import { cn } from "@/lib/utils";
+import { Changa, JetBrains_Mono } from "next/font/google";
+import LocalFont from "next/font/local";
 
-const inter = Inter({subsets:['latin'],variable:'--font-sans'})
+import { ThemeProvider } from "$/theme-provider";
+import { DirectionProvider } from "$/ui/direction";
 
-const fontMono = Geist_Mono({
+import "./globals.css";
+
+const fontSans = Changa({
+  subsets: ["arabic"],
+  variable: "--font-sans",
+});
+
+const fontSerif = LocalFont({
+  fallback: ["arial"],
+  preload: true,
+  src: "./public/fonts/Alyamama-VariableFont.ttf",
+  variable: "--font-serif",
+  weight: "100 900",
+});
+
+const fontMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
-})
+});
 
 export default function RootLayout({
   children,
 }: Readonly<{
-  children: React.ReactNode
+  children: React.ReactNode;
 }>) {
   return (
     <html
-      lang="en"
+      dir="rtl"
+      lang="ar"
       suppressHydrationWarning
-      className={cn("antialiased", fontMono.variable, "font-sans", inter.variable)}
+      className={cn(
+        "font-sans antialiased",
+        fontSans.variable,
+        fontSerif.variable,
+        fontMono.variable
+      )}
     >
       <body>
-        <ThemeProvider>{children}</ThemeProvider>
+        <DirectionProvider direction="rtl">
+          <ThemeProvider>{children}</ThemeProvider>
+        </DirectionProvider>
       </body>
     </html>
-  )
+  );
 }
