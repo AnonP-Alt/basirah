@@ -1,4 +1,5 @@
 import { cn } from "@/lib/utils";
+import type { Metadata } from "next";
 import { Changa, JetBrains_Mono } from "next/font/google";
 import LocalFont from "next/font/local";
 
@@ -13,9 +14,10 @@ const fontSans = Changa({
 });
 
 const fontSerif = LocalFont({
+  display: "fallback",
   fallback: ["arial"],
   preload: true,
-  src: "./public/fonts/Alyamama-VariableFont.ttf",
+  src: "../public/fonts/Alyamama-VariableFont.ttf",
   variable: "--font-serif",
   weight: "100 900",
 });
@@ -24,6 +26,13 @@ const fontMono = JetBrains_Mono({
   subsets: ["latin"],
   variable: "--font-mono",
 });
+
+export const metadata: Metadata = {
+  title: {
+    default: "بصيرة - إدارة الخطباء والمساجد",
+    template: "%s | بصيرة",
+  },
+};
 
 export default function RootLayout({
   children,
