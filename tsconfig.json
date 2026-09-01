@@ -30,7 +30,8 @@
     "**/*.tsx",
     "**/*.mts",
     ".next/types/**/*.ts",
-    ".next/dev/types/**/*.ts"
+    ".next/dev/types/**/*.ts",
+    "components/auth/register-form/index.tss"
   ],
   "exclude": ["node_modules"]
 }

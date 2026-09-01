@@ -15,6 +15,7 @@ import {
 import { toast } from "sonner";
 import { z } from "zod";
 
+import { FormField } from "$/form-field";
 import { PasswordInput } from "$/password-input";
 import { Button } from "$/ui/button";
 import {
@@ -25,13 +26,7 @@ import {
   CardTitle,
 } from "$/ui/card";
 import { Checkbox } from "$/ui/checkbox";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "$/ui/field";
-import { Input } from "$/ui/input";
+import { Field, FieldGroup, FieldLabel } from "$/ui/field";
 import { Spinner } from "$/ui/spinner";
 
 const loginFormSchema = z.object({
@@ -95,7 +90,7 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="max-w-xl min-w-sm">
+    <Card className="w-sm max-w-xl min-w-3xs">
       <CardHeader>
         <CardTitle className="text-xl">تسجيل الدخول</CardTitle>
         <CardAction>
@@ -110,56 +105,23 @@ export function LoginForm() {
       <CardContent>
         <form id="login-form" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
-            <Controller
+            <FormField
               control={control}
+              dir="ltr"
+              disabled={isSubmitting}
+              label="رقم الهاتف"
+              lang="en"
               name="username"
-              render={({
-                field: { disabled, ...field },
-                fieldState: { invalid, error },
-              }) => (
-                <Field data-invalid={invalid}>
-                  <FieldLabel htmlFor={field.name}>
-                    رقم الهاتف
-                  </FieldLabel>
-                  <Input
-                    aria-invalid={invalid}
-                    dir="ltr"
-                    disabled={disabled || isSubmitting}
-                    id={field.name}
-                    lang="en"
-                    type="tel"
-                    {...field}
-                  />
-                  {error && (
-                    <FieldError>{error.message}</FieldError>
-                  )}
-                </Field>
-              )}
+              type="tel"
             />
-            <Controller
+            <FormField
+              as={PasswordInput}
               control={control}
+              dir="ltr"
+              disabled={isSubmitting}
+              label="كلمة المرور"
+              lang="en"
               name="password"
-              render={({
-                field: { disabled, ...field },
-                fieldState: { invalid, error },
-              }) => (
-                <Field data-invalid={invalid}>
-                  <FieldLabel htmlFor={field.name}>
-                    كلمة المرور
-                  </FieldLabel>
-                  <PasswordInput
-                    aria-invalid={invalid}
-                    dir="ltr"
-                    disabled={disabled || isSubmitting}
-                    id={field.name}
-                    lang="en"
-                    {...field}
-                  />
-                  {error && (
-                    <FieldError>{error.message}</FieldError>
-                  )}
-                </Field>
-              )}
             />
             <Controller
               control={control}
