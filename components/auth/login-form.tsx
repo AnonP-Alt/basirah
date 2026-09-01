@@ -21,7 +21,6 @@ import {
   Card,
   CardAction,
   CardContent,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "$/ui/card";
@@ -96,9 +95,9 @@ export function LoginForm() {
   };
 
   return (
-    <Card className="max-h-fit min-w-sm">
+    <Card className="max-w-xl min-w-sm">
       <CardHeader>
-        <CardTitle>تسجيل الدخول إلى حسابك</CardTitle>
+        <CardTitle className="text-xl">تسجيل الدخول</CardTitle>
         <CardAction>
           <Button
             onClick={() => router.push("/auth/register")}
@@ -124,8 +123,10 @@ export function LoginForm() {
                   </FieldLabel>
                   <Input
                     aria-invalid={invalid}
+                    dir="ltr"
                     disabled={disabled || isSubmitting}
                     id={field.name}
+                    lang="en"
                     type="tel"
                     {...field}
                   />
@@ -180,6 +181,7 @@ export function LoginForm() {
                   <Checkbox
                     aria-invalid={invalid}
                     checked={value}
+                    className="cursor-pointer"
                     disabled={disabled || isSubmitting}
                     id={name}
                     onCheckedChange={onChange}
@@ -189,20 +191,17 @@ export function LoginForm() {
                 </Field>
               )}
             />
+            <Button
+              disabled={isSubmitting}
+              form="login-form"
+              type="submit"
+            >
+              {isSubmitting ? "يرجى الانتظار" : "تسجيل الدخول"}
+              {isSubmitting && <Spinner />}
+            </Button>
           </FieldGroup>
         </form>
       </CardContent>
-      <CardFooter>
-        <Button
-          className="w-full"
-          disabled={isSubmitting}
-          form="login-form"
-          type="submit"
-        >
-          {isSubmitting ? "يرجى الانتظار" : "تسجيل الدخول"}
-          {isSubmitting && <Spinner />}
-        </Button>
-      </CardFooter>
     </Card>
   );
 }

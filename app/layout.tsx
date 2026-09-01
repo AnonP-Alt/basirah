@@ -61,6 +61,7 @@ export default function RootLayout({
               position="top-center"
               richColors
               swipeDirections={["left", "right", "top"]}
+              toastOptions={{ className: "font-sans" }}
             />
           </ThemeProvider>
         </DirectionProvider>
