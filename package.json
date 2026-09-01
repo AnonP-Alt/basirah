@@ -13,7 +13,8 @@
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate",
     "db:push": "drizzle-kit push",
-    "db:seed": "bun run ./db/seed.ts"
+    "db:seed": "bun run ./db/seed.ts",
+    "postinstall": "bun db:generate && bun db:migrate"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",
