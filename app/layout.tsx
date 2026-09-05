@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Changa, JetBrains_Mono } from "next/font/google";
 import LocalFont from "next/font/local";
 
+import { QueryProvider } from "$/providers/query-provider";
 import { ThemeProvider } from "$/theme-provider";
 import { DirectionProvider } from "$/ui/direction";
 import { Toaster } from "$/ui/sonner";
@@ -55,7 +56,7 @@ export default function RootLayout({
       <body>
         <DirectionProvider direction="rtl">
           <ThemeProvider>
-            {children}
+            <QueryProvider>{children}</QueryProvider>
             <Toaster
               duration={3000}
               position="top-center"

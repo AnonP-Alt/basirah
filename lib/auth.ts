@@ -3,6 +3,7 @@ import { drizzleAdapter } from "@better-auth/drizzle-adapter/relations-v2";
 import { betterAuth } from "better-auth";
 import { type DBFieldAttribute } from "better-auth/db";
 import { username } from "better-auth/plugins";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 
 export const userAdditionalFields: Record<

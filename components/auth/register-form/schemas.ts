@@ -62,3 +62,7 @@ export const loginInfoSchema = z.object({
 });
 
 export type LoginInfoInputs = z.infer<typeof loginInfoSchema>;
+
+export const editUserSchema = personalInfoSchema
+  .partial()
+  .and(loginInfoSchema.partial());
