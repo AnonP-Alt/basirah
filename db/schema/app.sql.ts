@@ -1,4 +1,5 @@
 import {
+  boolean,
   date,
   integer,
   pgEnum,
@@ -21,6 +22,7 @@ export const khutbah = snakeCase.table(
     date: date().notNull(),
     mosqueId: integer().notNull(),
     sheikhId: text().notNull(),
+    completed: boolean().default(false),
   },
   (table) => [
     unique("khutbah_date_mosqueId_unique").on(
