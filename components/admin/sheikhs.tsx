@@ -10,7 +10,6 @@ import {
   InputGroupAddon,
   InputGroupInput,
 } from "$/ui/input-group";
-import { EditSheikhForm } from "./edit-sheikh-form";
 import { DataTable } from "./sheikhs-table/data-table";
 import { Search } from "lucide-react";
 
@@ -46,7 +45,6 @@ export function Sheikhs({ sheikhs }: Props) {
       <div className="my-16">
         <DataTable columns={columns} data={filteredSheikhs} />
       </div>
-      <EditSheikhForm />
     </div>
   );
 }

@@ -6,57 +6,60 @@ import { user } from "@/db/schema/auth.sql";
 import { eq } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
 
-export async function addMosque(
-  data: typeof mosque.$inferInsert
-) {
-  const { address, location, name } = data;
+async function successState(actions: () => void) {
   try {
-    await db.insert(mosque).values({ address, location, name });
-    revalidatePath("/moderator/mosques");
+    actions();
     return { success: true };
   } catch {
     return { success: false };
   }
 }
 
+export async function addMosque(
+  data: typeof mosque.$inferInsert
+) {
+  return await successState(async () => {
+    await db.insert(mosque).values(data);
+    revalidatePath("/moderator/mosques");
+  });
+}
+
 export async function deleteMosque(id: number) {
-  await db.delete(mosque).where(eq(mosque.id, id));
-  revalidatePath("/moderator/mosques");
+  return await successState(async () => {
+    await db.delete(mosque).where(eq(mosque.id, id));
+    revalidatePath("/moderator/mosques");
+  });
 }
 
 export async function deleteSheikh(id: string) {
-  await db.delete(user).where(eq(user.id, id));
-  revalidatePath("/moderator/sheikhs");
+  return await successState(async () => {
+    await db.delete(user).where(eq(user.id, id));
+    revalidatePath("/moderator/sheikhs");
+  });
 }
 
 export async function editMosque(
   data: Partial<typeof mosque.$inferInsert>
 ) {
-  try {
+  return await successState(async () => {
     await db
       .update(mosque)
       .set(data)
       .where(eq(mosque.id, data.id!));
     revalidatePath("/moderator/mosques");
-    return { success: true };
-  } catch {
-    return { success: false };
-  }
+  });
 }
 
 export async function editSheikh(
   data: Partial<typeof user.$inferInsert>
 ) {
-  try {
+  return await successState(async () => {
     await db
       .update(user)
       .set(data)
       .where(eq(user.id, data.id!));
     revalidatePath("/moderator/sheikhs");
-    return { success: true };
-  } catch {
-    return { success: false };
-  }
+  });
 }
 
 export async function emailTaken(email: string) {
@@ -73,16 +76,4 @@ export async function nationalIdTaken(id: string) {
   });
 
   return user?.nationalId === id;
-}
-
-export async function sheikhData(id: string) {
-  const user = await db.query.user.findFirst({
-    where: {
-      id,
-      role: "SHEIKH",
-    },
-  });
-
-  if (!user) return { success: false, data: null };
-  else return { success: true, data: user };
 }

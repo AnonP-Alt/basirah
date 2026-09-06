@@ -5,9 +5,8 @@ import { useDebounce } from "@uidotdev/usehooks";
 import { columns } from "./mosques-table/columns";
 import { useState } from "react";
 
-import { AddMosqueForm } from "./add-mosque-form";
-import { EditMosqueForm } from "./edit-mosque-form";
 import { DataTable } from "./mosques-table/data-table";
+import { MosqueDetails } from "$/admin/manage-mosque";
 import { Button } from "$/ui/button";
 import {
   Dialog,
@@ -45,7 +44,7 @@ export function Mosques({ mosques }: Props) {
             <DialogHeader>
               <DialogTitle>إضافة مسجد جديد</DialogTitle>
             </DialogHeader>
-            <AddMosqueForm />
+            <MosqueDetails action="add" />
           </DialogContent>
         </Dialog>
         <InputGroup>
@@ -64,7 +63,6 @@ export function Mosques({ mosques }: Props) {
       <div className="my-16">
         <DataTable columns={columns} data={filteredMosques} />
       </div>
-      <EditMosqueForm />
     </div>
   );
 }

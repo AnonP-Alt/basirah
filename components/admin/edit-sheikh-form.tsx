@@ -1,103 +1,82 @@
+import { user } from "@/db/schema/auth.sql";
 import { editSheikh } from "@/lib/actions";
-import { useGlobalStore } from "@/stores/useGlobalStore";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { editUserSchema } from "$/auth/register-form/schemas";
-import { useEffect } from "react";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 
 import { FormField } from "$/form-field";
 import { Button } from "$/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "$/ui/dialog";
 import { FieldGroup } from "$/ui/field";
 import { Spinner } from "$/ui/spinner";
 
 type EditSheikhInputs = z.infer<typeof editUserSchema>;
 
-export function EditSheikhForm() {
-  const {
-    editSheikhData,
-    editSheikhFormOpen,
-    setEditSheikhFormOpen,
-  } = useGlobalStore();
+type Props = {
+  sheikh: typeof user.$inferInsert;
+};
 
+export function EditSheikhForm({ sheikh }: Props) {
   const {
     control,
     formState: { isSubmitting },
     handleSubmit,
-    reset,
   } = useForm<EditSheikhInputs>({
-    defaultValues: editSheikhData ?? {},
+    defaultValues: sheikh,
     resolver: zodResolver(editUserSchema),
   });
-
-  useEffect(() => {
-    if (editSheikhData) reset(editSheikhData);
-  }, [editSheikhData, reset]);
 
   const onSubmit: SubmitHandler<EditSheikhInputs> = async (
     inputs
   ) => {
     try {
-      const res = await editSheikh({
-        ...editSheikhData,
+      const { success } = await editSheikh({
+        ...sheikh,
         ...inputs,
       });
-      if (!res.success)
-        toast.error("حدث خطأ ما أثناء تعديل البيانات");
-      else toast.success("تم تعديل البيانات بنجاح");
+      if (success) toast.success("تم تعديل بيانات الشيخ بنجاح");
+      else toast.error("حدث خطأ ما أثناء تعديل بيانات الشيخ");
     } catch {
-      toast.error("حدث خطأ ما أثناء تعديل البيانات");
+      toast.error("حدث خطأ ما أثناء تعديل بيانات الشيخ");
     }
   };
 
   return (
-    <Dialog
-      defaultOpen={false}
-      open={editSheikhFormOpen}
-      onOpenChange={setEditSheikhFormOpen}
-    >
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>تعديل بيانات الشيخ</DialogTitle>
-        </DialogHeader>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <FieldGroup>
-            <FormField
-              control={control}
-              label="الاسم"
-              name="name"
-            />
-            <FormField
-              control={control}
-              label="رقم الهاتف"
-              name="username"
-              type="tel"
-            />
-            <FormField
-              control={control}
-              label="الرقم القومي"
-              name="nationalId"
-            />
-            <Button disabled={isSubmitting} type="submit">
-              {isSubmitting ? (
-                <>
-                  جار تعديل البيانات
-                  <Spinner />
-                </>
-              ) : (
-                "قم بالتعديل"
-              )}
-            </Button>
-          </FieldGroup>
-        </form>
-      </DialogContent>
-    </Dialog>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <FieldGroup>
+        <FormField
+          control={control}
+          disabled={isSubmitting}
+          label="الاسم"
+          name="name"
+        />
+        <FormField
+          control={control}
+          disabled={isSubmitting}
+          label="رقم الهاتف"
+          name="username"
+          type="tel"
+        />
+        <FormField
+          control={control}
+          dir="ltr"
+          disabled={isSubmitting}
+          label="الرقم القومي"
+          lang="en"
+          name="nationalId"
+        />
+        <Button disabled={isSubmitting} type="submit">
+          {isSubmitting ? (
+            <>
+              يرجى الانتظار
+              <Spinner />
+            </>
+          ) : (
+            "قم بالتعديل"
+          )}
+        </Button>
+      </FieldGroup>
+    </form>
   );
 }
