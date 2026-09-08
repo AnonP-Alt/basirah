@@ -1,6 +1,5 @@
 "use client";
 
-import { emailTaken } from "@/lib/actions";
 import { authClient } from "@/lib/auth-client";
 import {
   authErrorsI18n,
@@ -13,6 +12,7 @@ import {
   loginInfoSchema,
 } from "./schemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { md5 } from "js-md5";
 import { useRouter } from "next/navigation";
 import { type SubmitHandler, useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -37,7 +37,6 @@ export function LoginInfoForm() {
     setError,
   } = useForm<LoginInfoInputs>({
     defaultValues: {
-      email: "",
       password: "",
       username: "",
     },
@@ -45,26 +44,21 @@ export function LoginInfoForm() {
   });
 
   const onSubmit: SubmitHandler<LoginInfoInputs> = async ({
-    email,
     password,
     username,
   }) => {
     try {
-      const [eTaken, { data }] = await Promise.all([
-        emailTaken(email),
-        authClient.isUsernameAvailable({ username }),
-      ]);
+      const email = `${md5(nationalId)}@basirah-nu.vercel.app`;
+      const { data } = await authClient.isUsernameAvailable({
+        username,
+      });
 
       if (!data?.available)
         setError("username", {
           message: "رقم الهاتف مسجل بالفعل",
         });
-      if (eTaken)
-        setError("email", {
-          message: "البريد الإلكتروني مسجل بالفعل",
-        });
 
-      if (!eTaken && data?.available) {
+      if (data?.available) {
         await authClient.signUp.email(
           {
             address,
@@ -104,15 +98,6 @@ export function LoginInfoForm() {
           label="رقم الهاتف"
           name="username"
           type="tel"
-        />
-        <FormField
-          control={control}
-          dir="ltr"
-          disabled={isSubmitting}
-          label="البريد الإلكتروني"
-          lang="en"
-          name="email"
-          type="email"
         />
         <FormField
           as={PasswordInput}
