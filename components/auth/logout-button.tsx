@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { Button } from "$/ui/button";
 import { Button as ButtonPrimitive } from "@base-ui/react/button";
 
-type Props = ButtonPrimitive.Props;
+type Props = React.PropsWithChildren<ButtonPrimitive.Props>;
 
-export function LogOutButton(props: Props) {
+export function LogOutButton({ children, ...props }: Props) {
   const router = useRouter();
 
   const handleClick = async () => {
@@ -18,7 +18,7 @@ export function LogOutButton(props: Props) {
 
   return (
     <Button {...props} onClick={handleClick}>
-      Logout
+      {children}
     </Button>
   );
 }
